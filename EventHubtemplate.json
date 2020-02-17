@@ -1,0 +1,140 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "Namespace": {
+            "minLength": 6,
+            "maxLength": 50,
+            "type": "string",
+            "metadata": {
+                "description": "Use Event Hub Namespace."
+            }
+        },
+        "Account": {
+            "minLength": 2,
+            "maxLength": 50,
+            "type": "string",
+            "metadata": {
+                "description": "Use your company name."
+            }
+        },
+        "EventHub": {
+            "minLength": 2,
+            "maxLength": 50,
+            "type": "string",
+            "metadata": {
+                "description": "Use Event Hub instance name."
+            }
+        },
+        "ProcessingTier": {
+            "defaultValue": "Basic",
+            "allowedValues": [ "Basic", "Standard"],
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the messaging tier for service Bus namespace."
+            }
+        },
+        "Environment": {
+            "allowedValues": ["Development", "Staging", "Production"],
+            "type": "string",
+            "metadata": {
+                "description": "State of the project."
+            }
+        }
+    },
+    "variables": {
+        "location": "[resourceGroup().location]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.EventHub/namespaces",
+            "apiVersion": "2018-01-01-preview",
+            "name": "[parameters('Namespace')]",
+            "location": "[variables('location')]",
+            "sku": {
+                "name": "[parameters('ProcessingTier')]",
+                "tier": "[parameters('ProcessingTier')]",
+                "capacity": 1
+            },
+            "properties": {
+                "zoneRedundant": false,
+                "isAutoInflateEnabled": false,
+                "maximumThroughputUnits": 0,
+                "kafkaEnabled": false
+            },
+            "tags" : {
+                "environment" : "[parameters('Environment')]"
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
+            "apiVersion": "2017-04-01",
+            "name": "[concat(parameters('Namespace'), '/RootManageSharedAccessKey')]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('Namespace'))]"
+            ],
+            "properties": {
+                "rights": [
+                    "Listen",
+                    "Manage",
+                    "Send"
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs",
+            "apiVersion": "2017-04-01",
+            "name": "[concat(parameters('Namespace'), '/', parameters('EventHub'))]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('Namespace'))]"
+            ],
+            "properties": {
+                "messageRetentionInDays": 1,
+                "partitionCount": 2,
+                "status": "Active"
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/networkRuleSets",
+            "apiVersion": "2018-01-01-preview",
+            "name": "[concat(parameters('Namespace'), '/default')]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('Namespace'))]"
+            ],
+            "properties": {
+                "defaultAction": "Deny",
+                "virtualNetworkRules": [],
+                "ipRules": []
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/authorizationRules",
+            "apiVersion": "2017-04-01",
+            "name": "[concat(parameters('Namespace'), '/', parameters('EventHub'), '/', parameters('Account'))]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('Namespace'), parameters('EventHub'))]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('Namespace'))]"
+            ],
+            "properties": {
+                "rights": [
+                    "Send"
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2017-04-01",
+            "name": "[concat(parameters('Namespace'), '/', parameters('EventHub'), '/$Default')]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('Namespace'), parameters('EventHub'))]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('Namespace'))]"
+            ],
+            "properties": {}
+        }
+    ]
+}
