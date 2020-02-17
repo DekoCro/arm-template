@@ -1,0 +1,22 @@
+
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "Namespace": {
+           "value": "EhubNamespace123"
+        },
+        "Account": {
+            "value": "crossMasters123"
+        },
+        "EventHub": {
+            "value": "EhubInstance123"
+        },
+        "ProcessingTier": {
+            "value": "Basic"
+        },
+        "Environment": {
+            "value": "Development"
+        }
+    }
+}
