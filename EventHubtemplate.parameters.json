@@ -4,19 +4,43 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "Namespace": {
-           "value": "EhubNamespace123"
+            "minLength": 6,
+            "maxLength": 50,
+            "type": "string",
+            "metadata": {
+                "description": "Use Event Hub Namespace."
+            }
         },
         "Account": {
-            "value": "crossMasters123"
+            "minLength": 2,
+            "maxLength": 50,
+            "type": "string",
+            "metadata": {
+                "description": "Use your company name."
+            }
         },
         "EventHub": {
-            "value": "EhubInstance123"
+            "minLength": 2,
+            "maxLength": 50,
+            "type": "string",
+            "metadata": {
+                "description": "Use Event Hub instance name."
+            }
         },
         "ProcessingTier": {
-            "value": "Basic"
+            "defaultValue": "Basic",
+            "allowedValues": [ "Basic", "Standard"],
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the messaging tier for service Bus namespace."
+            }
         },
         "Environment": {
-            "value": "Development"
+            "allowedValues": ["Development", "Staging", "Production"],
+            "type": "string",
+            "metadata": {
+                "description": "State of the project."
+            }
         }
     }
 }
