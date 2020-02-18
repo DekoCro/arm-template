@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "Namespace": {
-           "value": "EhubNamespace1231"
+           "value": "NamespaceDevelopment01"
         },
         "Account": {
-            "value": "crossMasters1231"
+            "value": "AccountDevelopment01"
         },
         "EventHub": {
-            "value": "EhubInstance1231"
+            "value": "InstanceDevelopment01"
         },
         "ProcessingTier": {
             "value": "Standard"
