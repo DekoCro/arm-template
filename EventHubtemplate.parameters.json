@@ -1,46 +1,21 @@
-
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "Namespace": {
-            "minLength": 6,
-            "maxLength": 50,
-            "type": "string",
-            "metadata": {
-                "description": "Use Event Hub Namespace."
-            }
+           "value": "EhubNamespace123"
         },
         "Account": {
-            "minLength": 2,
-            "maxLength": 50,
-            "type": "string",
-            "metadata": {
-                "description": "Use your company name."
-            }
+            "value": "crossMasters123"
         },
         "EventHub": {
-            "minLength": 2,
-            "maxLength": 50,
-            "type": "string",
-            "metadata": {
-                "description": "Use Event Hub instance name."
-            }
+            "value": "EhubInstance123"
         },
         "ProcessingTier": {
-            "defaultValue": "Basic",
-            "allowedValues": [ "Basic", "Standard"],
-            "type": "string",
-            "metadata": {
-                "description": "Specifies the messaging tier for service Bus namespace."
-            }
+            "value": "Standard"
         },
         "Environment": {
-            "allowedValues": ["Development", "Staging", "Production"],
-            "type": "string",
-            "metadata": {
-                "description": "State of the project."
-            }
+            "value": "Development"
         }
     }
-}
+} 
