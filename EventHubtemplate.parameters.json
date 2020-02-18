@@ -3,19 +3,19 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "Namespace": {
-           "value": "EhubNamespace1231"
+           "value": "NamespaceProduction01"
         },
         "Account": {
-            "value": "crossMasters1231"
+            "value": "AccountProduction01"
         },
         "EventHub": {
-            "value": "EhubInstance1231"
+            "value": "InstanceProduction01"
         },
         "ProcessingTier": {
             "value": "Standard"
         },
         "Environment": {
-            "value": "Development"
+            "value": "Production"
         }
     }
 } 
